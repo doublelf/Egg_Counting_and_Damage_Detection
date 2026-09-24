@@ -1,2 +1,0 @@
-# Egg_Counting_and_Damage_Detection
-Egg_Counting_and_Damage_Detection
