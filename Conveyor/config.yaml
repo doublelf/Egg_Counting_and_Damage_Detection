@@ -1,0 +1,45 @@
+counter:
+  model:
+    weights: ../Automated-Egg-Counting-System/best.pt
+    device: auto
+    img_size: 640
+    conf_threshold: 0.35
+    iou_threshold: 0.45
+  line:
+    start: [100, 240]
+    end:   [540, 240]
+    direction: down           # down | up | any
+    min_track_length: 3
+  tracker:
+    max_lost_frames: 30
+    iou_match_threshold: 0.2
+
+inspector:
+  model:
+    weights: ../Automated-Egg-Counting-System/best.pt   # vendored YOLOv5, classical mode
+    device: auto
+    img_size: 640
+    conf_threshold: 0.25
+    iou_threshold: 0.45
+    task: segment              # segment | detect (only used by mode=yolo)
+    mode: classical           # auto | classical | yolo
+  filter:
+    crack_only: false
+    min_mask_pixels: 0
+    min_bbox_area: 16
+
+association:
+  min_iou: 0.3                 # crossing event ↔ crack finding match threshold
+
+video:
+  source: "0"                  # "0" = webcam, or path to .mp4 / image dir
+  loop: false
+  resize_width: null
+  resize_height: null
+
+output:
+  frames_csv: logs/frames.csv
+  crossings_csv: logs/crossings.csv
+  summary_json: logs/summary.json
+  save_video: null             # e.g. output/annotated.mp4
+  show_window: true

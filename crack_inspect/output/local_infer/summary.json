@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "conf": 0.5,
+    "iou": 0.45
+  },
+  "summary": {
+    "frames": 444,
+    "total_eggs": 855,
+    "total_cracked": 332,
+    "total_intact": 0,
+    "total_dirty": 523,
+    "total_other": 0,
+    "overall_crack_rate": 0.3883,
+    "avg_crack_area_ratio": 0.0125,
+    "max_crack_area_ratio": 0.0447,
+    "by_class": {
+      "brown-egg-dirty": 523,
+      "brown-egg-crack": 332
+    }
+  }
+}

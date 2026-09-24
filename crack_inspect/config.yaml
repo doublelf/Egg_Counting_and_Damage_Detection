@@ -1,0 +1,72 @@
+model:
+  weights: best.pt
+  device: auto           # auto | cpu | cuda | cuda:0
+  img_size: 640
+  conf_threshold: 0.25
+  iou_threshold: 0.45
+  classes: null          # e.g. [2, 4] to keep only brown-egg-crack + white-egg-crack
+  task: segment          # segment | detect
+
+mode: auto               # auto | yolo | classical | hybrid
+  # auto      : YOLOv8-seg when best.pt exists, otherwise classical
+  # yolo      : force YOLOv8-seg (requires best.pt)
+  # classical : pure OpenCV pipeline, no egg weights required
+  # hybrid    : vendored YOLOv5 (Automated-Egg-Counting-System/best.pt)
+  #             finds eggs, OpenCV classifies crack/dirty inside each ROI
+
+classical_egg_weights: ../Automated-Egg-Counting-System/best.pt
+  # Only used when mode=hybrid (or mode=auto and yolo unavailable)
+
+visual:
+  mask_alpha: 0.45
+  box_thickness: 2
+  label_font_scale: 0.5
+  hud_font_scale: 0.9
+  show_mask: true
+  show_box: true
+
+filter:
+  crack_only: false      # when true, non-crack findings are dropped before stats
+  min_mask_pixels: 8
+  min_bbox_area: 16
+
+classical:
+  color_a_threshold: 135        # Lab a* mean; > this => brown
+  clahe_clip: 2.0
+  clahe_tile: 8
+  bilateral_d: 9
+  bilateral_sigma: 75.0
+  blackhat_kernel: [15, 15]
+  threshold_block_size: 51
+  threshold_c: -10
+  cleanup_kernel: [3, 3]
+  min_component_area: 12
+  crack_min_aspect: 3.0
+  crack_max_solidity: 0.5
+  dirt_min_aspect: 0.7
+  dirt_max_aspect: 1.5
+  dirt_max_solidity: 0.7
+  dirt_min_area_ratio: 0.01
+  crack_area_threshold: 0.01
+  dirt_area_threshold: 0.02
+  ellipse_inset: 0.45
+
+video:
+  source: "0"            # "0" = webcam; or path to .mp4 / image folder
+  loop: false
+  resize_width: null
+  resize_height: null
+
+output:
+  csv_path: logs/inspect.csv
+  summary_path: logs/summary.json
+  save_video: null       # e.g. output/annotated.mp4
+  show_window: true
+
+class_names:
+  - brow-egg-dirty
+  - brown-egg
+  - brown-egg-crack
+  - white-egg
+  - white-egg-crack
+  - white-egg-dirty
